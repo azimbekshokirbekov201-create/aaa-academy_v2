@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#1267ee">
+  <title>AAA Academy{% block head_title %}{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static',path='css/style.css') }}?v=5">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <div class="logo">AAA</div>
+      <div><b>AAA Academy</b><small>Learn · Grow · Succeed</small></div>
+    </div>
+    <nav>
+      {% if user and user.role=='admin' %}
+      <a href="/dashboard">⌂ <span>Dashboard</span></a>
+      <a href="/groups">▦ <span>Guruhlar</span></a>
+      <a href="/students">♙ <span>O‘quvchilar</span></a>
+      <a href="/teachers">♟ <span>O‘qituvchilar</span></a>
+      <a href="/attendance">✓ <span>Davomat</span></a>
+      <a href="/payments">₿ <span>To‘lovlar</span></a>
+      {% elif user and user.role=='teacher' %}
+      <a href="/teacher">⌂ <span>Dashboard</span></a>
+      <a href="/attendance">✓ <span>Davomat</span></a>
+      {% elif user and user.role=='student' %}
+      <a href="/student">⌂ <span>Bosh sahifa</span></a>
+      {% endif %}
+    </nav>
+    <form method="post" action="/logout" class="logout"><button>↪ Chiqish</button></form>
+  </aside>
+  <main class="main">
+    <header>
+      <div><span class="eyebrow">AAA ACADEMY</span><h1>{% block title %}Dashboard{% endblock %}</h1></div>
+      <div class="profile"><div class="avatar">{{ (user.full_name or user.sub)[0]|upper }}</div><div><b>{{ user.full_name or user.sub }}</b><small>{{ user.role|capitalize }}</small></div></div>
+    </header>
+    {% block content %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>
